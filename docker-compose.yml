@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+    postgres:
+        environment:
+            # user and database are "postgres" by default
+            POSTGRES_PASSWORD: postgres
+        image: postgres:15-alpine # https://hub.docker.com/_/postgres
+        ports:
+            - '5432:5432'
+        restart: always
+        volumes:
+            - param-fetcher-serializer-data:/var/lib/postgresql/data
+
+volumes:
+    param-fetcher-serializer-data:
+        driver: local
