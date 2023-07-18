@@ -11,7 +11,7 @@ import { FindOptionsWhere } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ModuleRef } from '@nestjs/core';
 
-export function ParamFetchPipe<T>(
+export function ParamFetcherPipe<T>(
   entityType: Type<T>,
 ): Type<PipeTransform<string, Promise<T>>> {
   @Injectable()
@@ -33,7 +33,6 @@ export function ParamFetchPipe<T>(
       });
 
       try {
-        console.log(repository);
         return await repository.findOneOrFail({
           where: { id: id } as FindOptionsWhere<Type<T>>,
         });

@@ -15,9 +15,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { instanceToPlain } from 'class-transformer';
 
 import { AppService } from './app.service';
-import { ParamFetchPipe } from './pipes/param-fetch.pipe';
+import { ParamFetcherPipe } from './pipes/param-fetcher.pipe';
 import { Person } from './entities/person.entity';
 import { UpdatePersonDto } from './dto/update-person.dto';
+import { ApiParam } from '@nestjs/swagger';
 
 @Controller()
 export class AppController {
@@ -31,6 +32,7 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @ApiParam({ name: 'id', type: 'string' })
   @Get(':id')
   @SerializeOptions({
     groups: ['default'],
@@ -38,12 +40,13 @@ export class AppController {
   })
   @UseInterceptors(ClassSerializerInterceptor)
   public getOne(
-    @Param('id', ParseUUIDPipe, ParamFetchPipe(Person))
+    @Param('id', ParseUUIDPipe, ParamFetcherPipe(Person))
     person: Person,
   ): Person {
     return person;
   }
 
+  @ApiParam({ name: 'id', type: 'string' })
   @Patch(':id')
   @SerializeOptions({
     groups: ['default'],
@@ -51,7 +54,7 @@ export class AppController {
   })
   @UseInterceptors(ClassSerializerInterceptor)
   public async patch(
-    @Param('id', ParseUUIDPipe, ParamFetchPipe(Person))
+    @Param('id', ParseUUIDPipe, ParamFetcherPipe(Person))
     person: Person,
     @Body()
     dto: UpdatePersonDto,
