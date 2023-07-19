@@ -1,3 +1,8 @@
+Cette présentation montre une fonction et la configuration utilisée par nos soins avec NestJS.
+D'un niveau intermédiaire (voire avancé), les fonctions écrites permettent d'économiser l'écriture de nombreuses autres lignes de code.
+
+Cela permet de montrer la puissance d'un framework comme NestJS et comment il est possible d'intégrer des fonctions grâce à des annotations.
+
 # ParamFetcher & Serializer sur NestJS
 
 Récupérer rapidement une entité de base de données grâce à un décorateur placé dans le code.
@@ -6,9 +11,9 @@ Cette factorisation de code permet de réduire considérablement les lignes de c
 
 https://github.com/dotic/demo-param-fetcher-serializer
 
-niveau: intermédiaire / avancé
-projet: javascript / nodejs
-license: opensource
+niveau : intermédiaire / avancé
+projet : javascript / nodejs
+license : opensource
 
 ## NestJS
 NestJS est un framework backend pour monter rapidement une API,
