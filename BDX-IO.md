@@ -11,9 +11,9 @@ Cette factorisation de code permet de réduire considérablement les lignes de c
 
 https://github.com/dotic/demo-param-fetcher-serializer
 
-niveau : intermédiaire / avancé
-projet : javascript / nodejs
-license : opensource
+- niveau : intermédiaire / avancé
+- langage : javascript / nodejs
+- license : opensource
 
 ## NestJS
 NestJS est un framework backend pour monter rapidement une API,
