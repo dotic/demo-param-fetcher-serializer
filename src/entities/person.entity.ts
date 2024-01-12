@@ -8,7 +8,7 @@ export class Person {
   public email!: string;
 
   @Column('varchar', { length: 255 })
-  @Expose({ groups: ['default'] })
+  @Expose({ groups: ['advanced'] })
   public givenName!: string;
 
   @PrimaryGeneratedColumn('uuid')
@@ -18,8 +18,4 @@ export class Person {
   @Column('varchar', { length: 255 })
   @Exclude()
   public surname!: string;
-
-  public constructor(values) {
-    Object.assign(this, values);
-  }
 }

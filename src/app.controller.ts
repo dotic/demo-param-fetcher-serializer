@@ -10,9 +10,8 @@ import {
   SerializeOptions,
   UseInterceptors,
 } from '@nestjs/common';
-import { DeepPartial, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { instanceToPlain } from 'class-transformer';
 
 import { AppService } from './app.service';
 import { ParamFetcherPipe } from './pipes/param-fetcher.pipe';
@@ -24,12 +23,24 @@ import { ApiParam } from '@nestjs/swagger';
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    @InjectRepository(Person) private personRepository: Repository<Person>,
+    @InjectRepository(Person)
+    private readonly personRepository: Repository<Person>,
   ) {}
 
-  @Get()
+  @Get('hello')
   public getHello(): string {
     return this.appService.getHello();
+  }
+
+  @Get()
+  @SerializeOptions({
+    // groups: ['default'],
+    groups: ['default', 'advanced'],
+    strategy: 'excludeAll',
+  })
+  @UseInterceptors(ClassSerializerInterceptor)
+  public async get(): Promise<Person[]> {
+    return await this.personRepository.find();
   }
 
   @ApiParam({ name: 'id', type: 'string' })
@@ -49,27 +60,22 @@ export class AppController {
   @ApiParam({ name: 'id', type: 'string' })
   @Patch(':id')
   @SerializeOptions({
-    groups: ['default'],
+    groups: ['default', 'advanced'],
     strategy: 'excludeAll',
   })
   @UseInterceptors(ClassSerializerInterceptor)
   public async patch(
     @Param('id', ParseUUIDPipe, ParamFetcherPipe(Person))
     person: Person,
-    @Body()
-    dto: UpdatePersonDto,
+    @Body() dto: UpdatePersonDto,
   ): Promise<Person> {
     try {
-      const newData = {
-        id: person.id,
-        ...instanceToPlain(dto),
-      } as DeepPartial<Person>;
+      const updatedPerson = Object.assign(person, dto);
+      const savedPerson: Person = await this.personRepository.save(
+        updatedPerson,
+      );
 
-      const entity: Person = this.personRepository.create(newData);
-      const updatedProperties: DeepPartial<Person> =
-        await this.personRepository.save<Person>(entity);
-
-      return new Person({ ...person, ...entity, ...updatedProperties });
+      return savedPerson;
     } catch (error: unknown) {
       throw new BadRequestException();
     }
