@@ -46,7 +46,7 @@ export class AppController {
   @ApiParam({ name: 'id', type: 'string' })
   @Get(':id')
   @SerializeOptions({
-    groups: ['default'],
+    groups: ['default', 'advanced'],
     strategy: 'excludeAll',
   })
   @UseInterceptors(ClassSerializerInterceptor)
